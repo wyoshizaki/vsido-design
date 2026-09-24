@@ -1,0 +1,194 @@
+/* ============================================================================
+   at_ui.css — 共通UI部品のスタイル
+   ----------------------------------------------------------------------------
+   at_theme.css の変数だけを参照する。★ここに生の色コードを書かないこと。
+   各ツールのHTMLは、このクラス名を使って組む。
+   ============================================================================ */
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;font-family:var(--font);background:var(--bg);color:var(--fg);font-size:14px;
+}
+
+/* ---------------------------------------------------------------- ヘッダ */
+/* ヘッダは1本の帯として塗れるようにしてある。--header-* を上書きすれば、
+   ブランド配色のように「青地に白文字＋下に黄の罫線」にできる。
+   既定はパネルと同じ色なので、指定しなければ従来どおりの見た目。 */
+header{
+  position:sticky;top:0;z-index:5;
+  background:var(--header-bg);color:var(--header-fg);
+  /* 下の線は2本重ねられる。外側(border)が --header-rule、その内側(inset shadow)が
+     --header-accent。ブランド配色では「青の上に黄」の2本線になる。
+     使わないテーマは --header-accent を transparent にしておけば1本に見える。 */
+  border-bottom:3px solid var(--header-rule);
+  box-shadow:inset 0 -3px 0 var(--header-accent);
+  padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+header h1{font-size:16px;margin:0 8px 0 0;font-weight:600;color:var(--header-fg);
+          display:flex;align-items:center;gap:12px}
+
+/* ヘッダのロゴ。画像の差し替えは --logo-url（テーマごと）で行う。
+   元画像は 972x271 なので、比率 3.587 を保った寸法にすること。 */
+.brand-logo{display:inline-block;width:104px;height:29px;flex:none;
+            background:var(--logo-url) no-repeat center/contain}
+header .field label,header .switch{color:var(--header-label)}
+/* 控えめボタンは既定で --mut（暗い灰）なので、色の付いたヘッダ帯の上では沈む。
+   帯の文字色に合わせて明るくする。 */
+header button.ghost{color:var(--header-fg);border-color:var(--header-label)}
+header button.ghost:hover{background:var(--header-hover)}
+header .spacer{margin-left:auto}
+
+main{padding:16px;max-width:1800px;margin:0 auto}
+
+/* ---------------------------------------------------------------- 小物 */
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ng);display:inline-block;
+     margin-right:6px;vertical-align:middle}
+.dot.ok{background:var(--ok)}
+.dot.warn{background:var(--warn)}
+
+.pill{padding:2px 8px;border-radius:var(--radius-pill);background:var(--sunken);
+      border:1px solid var(--line);color:var(--mut);font-size:12px;white-space:nowrap}
+.pill.ok{color:var(--ok);border-color:var(--ok)}
+.pill.err{color:var(--ng);border-color:var(--ng)}
+.pill.warn{color:var(--warn);border-color:var(--warn)}
+/* 送信ログなど長い文字列が入る pill は折り返してレイアウト崩れを防ぐ */
+.pill.wrap{display:inline-block;max-width:100%;white-space:normal;overflow-wrap:anywhere;
+           word-break:break-all;vertical-align:top}
+
+.field{display:flex;align-items:center;gap:5px}
+.field label{color:var(--mut)}
+.switch{display:flex;align-items:center;gap:6px;color:var(--mut)}
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar.tight{gap:8px;margin-bottom:8px}
+.sep{flex-basis:100%;height:0}
+.mut{color:var(--mut)}
+.hidden{display:none !important}
+
+/* ---------------------------------------------------------------- 入力 */
+input[type=text],input[type=number],select{
+  background:var(--sunken);border:1px solid var(--line);color:var(--fg);
+  border-radius:6px;padding:5px 7px;font-size:13px;font-family:inherit;
+}
+input[type=text]:focus,input[type=number]:focus,select:focus{outline:1px solid var(--accent)}
+input.ip{width:120px} input.port{width:64px} input.axisnum{width:56px}
+input.cell{width:56px} input.cell-wide{width:76px} input.num-sm{width:52px}
+input[type=range]{vertical-align:middle;accent-color:var(--accent)}
+input[type=checkbox]{accent-color:var(--accent)}
+
+button{
+  background:var(--btn);border:1px solid var(--btn-line);color:var(--btn-fg);border-radius:var(--radius-sm);
+  padding:7px 12px;cursor:pointer;font-size:13px;font-family:inherit;
+}
+button:hover{background:var(--btn-hover)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.warn{background:var(--btn-danger);border-color:var(--btn-danger-line)}
+button.warn:hover{background:var(--btn-danger-hover)}
+button.ghost{background:transparent;border-color:var(--line);color:var(--mut)}
+button.ghost:hover{background:var(--hover)}
+button.sm{padding:3px 8px;font-size:11px}
+button.active{background:var(--btn);color:var(--btn-fg);border-color:var(--btn-line)}
+
+/* ---------------------------------------------------------------- パネル */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.panel-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.panel-title{margin:0;flex:1;min-width:0;font-size:13px;color:var(--mut);font-weight:600}
+.panel-body.collapsed{display:none}
+.drag-handle{cursor:grab;color:var(--mut);font-size:18px;line-height:1;user-select:none;padding:2px 4px}
+.drag-handle:active{cursor:grabbing}
+.collapse-toggle{background:transparent;border:none;color:var(--mut);cursor:pointer;font-size:11px;padding:2px 4px}
+.panel.dragging{opacity:.35}
+.panel.drag-over{outline:2px dashed var(--accent);outline-offset:2px}
+
+h3{font-size:13px;color:var(--mut);margin:0 0 10px;font-weight:600}
+
+/* ダッシュボード: 列ベースのマソンリー配置（高さの違うパネルを列ごとに上から積む）。
+   行ベースのグリッドだと、セル高さが揃わないときに隙間や崩れが出やすいため。 */
+.dash-wrap{display:flex;align-items:flex-start;gap:14px}
+.dash-col{display:flex;flex-direction:column;gap:14px;flex:1 1 0;min-width:0;min-height:40px}
+.dash-col.drag-over-col{outline:2px dashed var(--accent);outline-offset:2px;border-radius:var(--radius)}
+.colcount-buttons{display:flex;gap:4px}
+.colcount-buttons button{font-size:11px;padding:3px 7px;background:transparent;border:1px solid var(--line);
+                         color:var(--mut);border-radius:5px}
+.colcount-buttons button:hover{background:var(--hover)}
+.colcount-buttons button.active{background:var(--btn);color:var(--btn-fg);border-color:var(--btn-line)}
+
+/* ---------------------------------------------------------------- 表 */
+/* width:100% だと列がテーブル幅に収まるよう圧縮されバーが折り返される。
+   min-width:100%（狭い時は親幅まで）+ width:max-content（内容が広ければそちら）にして、
+   入りきらない分は .tblwrap の overflow:auto で横スクロールさせる。 */
+.tblwrap{overflow:auto;max-height:65vh;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:max-content;min-width:100%;font-size:12px}
+thead th{position:sticky;top:0;background:var(--head);color:var(--mut);font-weight:600;
+         padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}
+tbody td{padding:5px 8px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+/* ゲームパッドを割り当てた軸の行。--row-accent を敷いて、表の中で見つけやすくする。
+   ホバーが勝つよう、この規則は :hover より前に置くこと（詳細度が同じなので後勝ちになる）。 */
+tbody tr.assigned{background:var(--row-accent)}
+tbody tr:hover{background:var(--hover)}
+tbody td.idx{color:var(--mut);font-variant-numeric:tabular-nums}
+/* 割り当て済みの行は地色が --row-accent（黄）になるので、軸番号の色は主役色を
+   そのまま使えないことがある。専用トークンにして、テーマ側で詰められるようにする。 */
+tbody tr.assigned td.idx{color:var(--row-marker);font-weight:700}
+
+/* ---------------------------------------------------------------- バー */
+/* table-cell に display:flex を使うと width:max-content との組み合わせで
+   末尾列が潰れる Chromium の不具合があるため、inline-block + vertical-align で組む。 */
+td.metric-cell{white-space:nowrap}
+.metricbar{position:relative;display:inline-block;vertical-align:middle;width:80px;height:12px;
+           background:var(--sunken);border:1px solid var(--line);border-radius:6px;
+           overflow:hidden;margin-right:8px}
+.metricbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;
+                transition:width .15s linear, background-color .15s linear}
+.metricbar-fill.agl{background:var(--series-agl)}
+.metricbar-fill.objagl{background:var(--series-objagl)}
+.metricbar-fill.vel{background:var(--series-vel)}
+/* 電流バーは JS が「安全=緑 → 危険=赤」へ色相を回す。起点だけここで決める */
+.metricbar-fill.cur{background:var(--meter-ok)}
+.metricbar-fill.over{box-shadow:inset 0 0 0 1px var(--overlay-edge)}
+.metricbar-val{display:inline-block;vertical-align:middle;min-width:44px;text-align:right;
+               color:var(--fg);font-variant-numeric:tabular-nums}
+
+/* 中央基準の双方向バー（スティックなど -1〜+1 の入力向け） */
+.biobar{position:relative;height:10px;background:var(--sunken);border:1px solid var(--line);
+        border-radius:5px;overflow:hidden}
+.biobar::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--line)}
+.biobar-fill{position:absolute;top:0;bottom:0;left:50%;width:0%;background:var(--accent)}
+
+/* ---------------------------------------------------------------- ログ */
+.log{height:110px;overflow:auto;background:var(--sunken);border:1px solid var(--line);
+     border-radius:8px;padding:8px;font-family:var(--font-mono);font-size:11px;color:var(--code)}
+pre{white-space:pre-wrap;word-break:break-all;font-size:12px;color:var(--code);margin:8px 0 0}
+details{margin-top:10px}
+summary{cursor:pointer;color:var(--mut)}
+
+canvas.chart{display:block;width:100%;background:var(--sunken);
+             border:1px solid var(--line);border-radius:8px}
+
+/* ---------------------------------------------------------------- エラーランプ */
+.errwrap{margin-left:auto;display:flex;align-items:center;gap:16px}
+.lamp{width:60px;height:60px;border-radius:50%;border:4px solid var(--lamp-off-line);
+      background:var(--lamp-off);cursor:pointer;padding:0}
+.lamp.on{background:radial-gradient(circle at 35% 30%, var(--lamp-hi), var(--lamp-mid) 60%, var(--lamp-lo));
+         border-color:var(--ng);box-shadow:0 0 28px 6px var(--lamp-glow);
+         animation:lampPulse 1s infinite}
+@keyframes lampPulse{
+  0%,100%{box-shadow:0 0 20px 4px var(--lamp-glow)}
+  50%{box-shadow:0 0 36px 12px var(--lamp-glow-strong)}
+}
+
+/* ---------------------------------------------------------------- 表示列トグル */
+/* チェックを外した列を消して横幅を詰める。JS側は wrap.classList.toggle("hide-xxx", …) を呼ぶだけ。
+   新しい列を足すときは、ここに1行と <th>/<td> の class="col-xxx" を追加する。 */
+.tblwrap.hide-ang      .col-ang,
+.tblwrap.hide-min      .col-min,
+.tblwrap.hide-max      .col-max,
+.tblwrap.hide-kp       .col-kp,
+.tblwrap.hide-kd       .col-kd,
+.tblwrap.hide-cur      .col-cur,
+.tblwrap.hide-vel      .col-vel,
+.tblwrap.hide-pad      .col-pad,
+.tblwrap.hide-telagl   .col-telagl,
+.tblwrap.hide-telobjagl .col-telobjagl,
+.tblwrap.hide-telvel   .col-telvel,
+.tblwrap.hide-telcur   .col-telcur { display:none }

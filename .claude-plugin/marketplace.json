@@ -1,0 +1,15 @@
+{
+  "name": "vsido",
+  "owner": {
+    "name": "Asratec"
+  },
+  "plugins": [
+    {
+      "name": "vsido-design",
+      "source": "./plugins/vsido-design",
+      "description": "V-Sido標準のUIデザイン。配色トークン・ロゴ・画面の組み方と、色を決めるときの制約をまとめたもの。「V-Sido標準のデザインに寄せて」で起動する。",
+      "version": "1.0.0",
+      "author": { "name": "Asratec" }
+    }
+  ]
+}

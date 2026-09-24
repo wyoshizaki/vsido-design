@@ -1,0 +1,74 @@
+/* ============================================================================
+   vsido.css — 案A「V-Sido」漆黒 × シアン
+   ----------------------------------------------------------------------------
+   ロボット制御システムらしい、黒に近い地色とシアンのアクセント。
+   計器・HUD に近い見え方で、色数を絞ってあるぶん数値が読みやすい。
+   ★ブランドカラーが確定したら --accent と --series-agl を差し替えるだけで全体に効く。
+   ============================================================================ */
+:root{
+  /* ---- 面と文字 ---- */
+  --bg:           #05080c;   /* ほぼ黒 */
+  --panel:        #0d141c;
+  --sunken:       #03060a;
+  --line:         #1c2c38;
+  --line-soft:    #12202a;
+  --hover:        #101c26;
+  --head:         #0f1a24;
+  --fg:           #e4f2f8;
+  --mut:          #7590a0;
+  --code:         #7fd6e8;   /* ログ・生データ */
+  --overlay-edge: #ffffff3d;
+
+  /* ---- ヘッダ帯 ---- */
+  --header-bg:    #0d141c;
+  --header-fg:    #e4f2f8;
+  --header-label: #7590a0;
+  --header-rule:  #1c2c38;
+  --header-hover: #ffffff26;
+  --row-accent:   #101c26;
+  --row-marker:   #00cfff;
+  --header-accent: transparent;
+  --logo-url:     url("/lib/vsido_logo_white.png");
+
+  /* ---- 意味を持つ色 ---- */
+  --accent:       #00cfff;   /* ★キーカラー */
+  --accent-glow:  #00cfffb3;
+  --ok:           #00e39b;
+  --ng:           #ff4759;
+  --warn:         #ffb300;
+  --info:         #9d8bff;
+  --meter-ok:     hsl(160,85%,42%);
+
+  /* ---- ボタン ---- */
+  --btn:                #0d3c4d;
+  --btn-fg:             #eafaff;
+  --btn-line:           #16687f;
+  --btn-hover:          #155a70;
+  --btn-danger:         #5c1f28;
+  --btn-danger-line:    #a3323f;
+  --btn-danger-hover:   #7d2a35;
+
+  /* ---- グラフの系列 ---- */
+  --series-agl:    #00cfff;
+  --series-objagl: #ffb300;
+  --series-vel:    #9d8bff;
+  --series-cur:    #ff5f70;
+
+  /* ---- ゲームパッド線画 ---- */
+  --gp-body:         #14212c;
+  --gp-body-line:    #2f4b5c;
+  --gp-control:      #060d13;
+  --gp-control-line: #5f7d8c;
+  --gp-press:        #0a5f77;
+  --gp-press-line:   #7fe6ff;
+  --gp-trigger-line: #ffb300;
+
+  /* ---- エラーランプ ---- */
+  --lamp-off:         #111e28;
+  --lamp-off-line:    #284050;
+  --lamp-hi:          #ff9aa4;
+  --lamp-mid:         #ff1f38;
+  --lamp-lo:          #8c0014;
+  --lamp-glow:        #ff2038b3;
+  --lamp-glow-strong: #ff2038e6;
+}

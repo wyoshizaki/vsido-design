@@ -1,0 +1,75 @@
+/* ============================================================================
+   navy.css — 現行の配色（ネイビー）
+   ----------------------------------------------------------------------------
+   いま使っている色。他のテーマと見比べるための基準として、
+   既定値をそのまま書き出してある。
+   at_theme.css の後に読み込まれ、配色トークンだけを上書きする。
+   形（角丸・フォント）は at_theme.css が持つので、ここには色だけを書く。
+   ============================================================================ */
+:root{
+  /* ---- 面と文字 ---- */
+  --bg:           #0f1420;  /* ページ地色 */
+  --panel:        #1a2233;  /* パネル・ヘッダ */
+  --sunken:       #0c111b;  /* 入力欄・ログ */
+  --line:         #2c3850;  /* 罫線 */
+  --line-soft:    #1e2740;  /* 薄い罫線 */
+  --hover:        #141b2c;  /* 行ホバー */
+  --head:         #141c2c;  /* 表ヘッダ */
+  --fg:           #e8edf6;  /* 本文 */
+  --mut:          #8a97b0;  /* 補助文字 */
+  --code:         #9fb4d8;  /* ログ・生データ */
+  --overlay-edge: #ffffff33;  /* バーの縁取り */
+
+  /* ---- ヘッダ帯 ---- */
+  --header-bg:    #1a2233;
+  --header-fg:    #e8edf6;
+  --header-label: #8a97b0;
+  --header-rule:  #2c3850;
+  --header-hover: #ffffff26;
+  --row-accent:   #141b2c;
+  --row-marker:   #3fa9ff;
+  --header-accent: transparent;
+  --logo-url:     url("/lib/vsido_logo_white.png");
+
+  /* ---- 意味を持つ色 ---- */
+  --accent:      #3fa9ff;  /* 主役・現在角度 */
+  --accent-glow: #3fa9ffb3;  /* 線画の光 */
+  --ok:          #37d67a;  /* 正常 */
+  --ng:          #ff5d5d;  /* 異常 */
+  --warn:        #ffb02e;  /* 注意・目標角度 */
+  --info:        #b98cff;  /* 速度 */
+  --meter-ok:    hsl(120,80%,45%);  /* 電流バーの安全側 */
+
+  /* ---- ボタン ---- */
+  --btn:              #27406b;
+  --btn-fg:           #ffffff;
+  --btn-line:         #34568c;
+  --btn-hover:        #30528a;
+  --btn-danger:       #6b2a2a;
+  --btn-danger-line:  #a13b3b;
+  --btn-danger-hover: #8a3636;
+
+  /* ---- グラフの系列 ---- */
+  --series-agl:    #3fa9ff;  /* 現在角度 */
+  --series-objagl: #ffb02e;  /* 目標角度 */
+  --series-vel:    #b98cff;  /* 速度 */
+  --series-cur:    #ff6b6b;  /* 電流 */
+
+  /* ---- ゲームパッド線画 ---- */
+  --gp-body:         #202b3e;
+  --gp-body-line:    #46536b;
+  --gp-control:      #101725;
+  --gp-control-line: #8a97b0;
+  --gp-press:        #3b79b8;
+  --gp-press-line:   #a9dbff;
+  --gp-trigger-line: #ffb02e;
+
+  /* ---- エラーランプ ---- */
+  --lamp-off:         #232c3f;
+  --lamp-off-line:    #3a4864;
+  --lamp-hi:          #ff9a9a;
+  --lamp-mid:         #ff2222;
+  --lamp-lo:          #a10000;
+  --lamp-glow:        #ff2828b3;
+  --lamp-glow-strong: #ff2828e6;
+}

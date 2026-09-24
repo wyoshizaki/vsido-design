@@ -1,0 +1,75 @@
+/* ============================================================================
+   sumi.css — 案B「墨」炭 × 金
+   ----------------------------------------------------------------------------
+   V-Sido の名前の由来（武士道）に寄せた和のダーク。
+   地色は青みのない炭色、文字は生成り、アクセントは金（山吹）。
+   青系が一切出てこないので「いかにも開発ツール」の硬さが和らぐ。
+   異常は朱（あか）で、金と離れているため見分けやすい。
+   ============================================================================ */
+:root{
+  /* ---- 面と文字 ---- */
+  --bg:           #14120f;   /* 墨 */
+  --panel:        #1f1c17;
+  --sunken:       #0d0b09;
+  --line:         #36302a;
+  --line-soft:    #24201b;
+  --hover:        #211d18;
+  --head:         #1a1713;
+  --fg:           #f2ece1;   /* 生成り */
+  --mut:          #9d9384;
+  --code:         #c9b98f;
+  --overlay-edge: #ffffff33;
+
+  /* ---- ヘッダ帯 ---- */
+  --header-bg:    #1f1c17;
+  --header-fg:    #f2ece1;
+  --header-label: #9d9384;
+  --header-rule:  #36302a;
+  --header-hover: #ffffff26;
+  --row-accent:   #211d18;
+  --row-marker:   #e0a534;
+  --header-accent: transparent;
+  --logo-url:     url("/lib/vsido_logo_white.png");
+
+  /* ---- 意味を持つ色 ---- */
+  --accent:       #e0a534;   /* 金／山吹 */
+  --accent-glow:  #e0a534a6;
+  --ok:           #86ab55;   /* 若草 */
+  --ng:           #ec6047;   /* 朱。地色が炭なので、他案よりわずかに明るくして読みやすさを確保 */
+  --warn:         #e8c667;
+  --info:         #8ba0c9;   /* 藍鼠 */
+  --meter-ok:     hsl(90,45%,45%);
+
+  /* ---- ボタン ---- */
+  --btn:                #4a3a1e;
+  --btn-fg:             #fdf6e7;
+  --btn-line:           #7a6130;
+  --btn-hover:          #5d4926;
+  --btn-danger:         #5c2a22;
+  --btn-danger-line:    #96473a;
+  --btn-danger-hover:   #74352b;
+
+  /* ---- グラフの系列 ---- */
+  --series-agl:    #e0a534;
+  --series-objagl: #8ba0c9;
+  --series-vel:    #86ab55;
+  --series-cur:    #ec6047;
+
+  /* ---- ゲームパッド線画 ---- */
+  --gp-body:         #2a251e;
+  --gp-body-line:    #544a3c;
+  --gp-control:      #100e0b;
+  --gp-control-line: #8d8272;
+  --gp-press:        #7a5c20;
+  --gp-press-line:   #f0cf87;
+  --gp-trigger-line: #e8c667;
+
+  /* ---- エラーランプ ---- */
+  --lamp-off:         #262019;
+  --lamp-off-line:    #473e32;
+  --lamp-hi:          #ffab96;
+  --lamp-mid:         #e03a20;
+  --lamp-lo:          #7a1505;
+  --lamp-glow:        #e03a20b3;
+  --lamp-glow-strong: #e03a20e6;
+}

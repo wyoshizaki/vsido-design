@@ -1,0 +1,56 @@
+/* ============================================================================
+   at_gamepad.css — ゲームパッド線画と入力一覧のスタイル
+   （at_theme.css の --gp-* トークンだけを参照する）
+   ============================================================================ */
+
+.gp-visual{border:1px solid var(--line);border-radius:var(--radius);background:var(--sunken);
+           display:flex;align-items:center;justify-content:center;padding:6px}
+.gp-svg{width:100%;max-width:520px}
+
+/* SVGの下に出す数値の行（SVG内に文字を詰め込むと、狭いパネルで重なるため分離した） */
+.gp-readout{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:6px}
+.gp-readout-cell{background:var(--sunken);border:1px solid var(--line);border-radius:6px;
+                 padding:3px 4px;text-align:center;min-width:0}
+.gp-readout-label{display:block;color:var(--mut);font-size:10px}
+.gp-readout-val{display:block;font-family:var(--font-mono);font-size:12px;
+                font-variant-numeric:tabular-nums}
+.gp-readout-val.live{color:var(--accent);font-weight:700}
+
+.gp-body{fill:var(--gp-body);stroke:var(--gp-body-line);stroke-width:3}
+.gp-control{fill:var(--gp-control);stroke:var(--gp-control-line);stroke-width:3}
+.gp-trigger{fill:var(--gp-control);stroke:var(--gp-trigger-line);stroke-width:3}
+.gp-active{stroke:var(--accent);filter:drop-shadow(0 0 6px var(--accent-glow))}
+.gp-button.gp-active,.gp-pad.gp-active{fill:var(--gp-press);stroke:var(--gp-press-line)}
+/* 割り当て済みの入力は常時うっすら光らせる（どれが効いているか一目で分かるように） */
+.gp-mapped{stroke:var(--ok)}
+.gp-text{fill:var(--fg);font:600 12px var(--font);text-anchor:middle;pointer-events:none}
+.gp-value{fill:var(--mut);font:11px var(--font-mono);text-anchor:middle;pointer-events:none}
+.gp-summary{fill:var(--mut);font:600 12px var(--font);text-anchor:middle}
+
+/* 入力一覧（6アナログ＋ボタン群） */
+.gp-inputs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.gp-input{background:var(--sunken);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.gp-input.live{border-color:var(--accent)}
+.gp-input-head{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:4px}
+.gp-input-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gp-input-val{font-family:var(--font-mono);color:var(--mut);font-variant-numeric:tabular-nums}
+.gp-input.live .gp-input-val{color:var(--accent)}
+
+/* ---------------------------------------------------------------- 割り当て */
+.map-list{display:flex;flex-direction:column;gap:8px}
+.map-row{background:var(--sunken);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.map-row.live{border-color:var(--accent)}
+.map-row.bad{border-color:var(--ng)}
+.map-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.map-head select{min-width:150px}
+.map-head .map-state{margin-left:auto}
+/* 指定点の表は列が6つあり、パネルを細くすると入りきらないので横スクロールさせる */
+.map-pts-wrap{overflow-x:auto}
+.map-pts{width:max-content;min-width:100%;font-size:12px}
+.map-pts th{position:static;background:transparent;border-bottom:1px solid var(--line-soft);
+            padding:3px 6px;font-weight:600}
+.map-pts td{padding:2px 6px;border-bottom:none}
+.map-pts td.pt-name{color:var(--mut);white-space:nowrap}
+.map-pts tr.pt-live td.pt-name{color:var(--accent)}
+.map-pts input{width:58px}
+.map-empty{color:var(--mut);padding:8px 2px}
