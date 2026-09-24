@@ -29,6 +29,12 @@ Claude Code で一度だけ次を実行します。
 /plugin update vsido-design@vsido
 ```
 
+### ★クラウドセッション（claude.ai/code）で使いたいとき
+
+**プラグインはクラウドセッションでは読み込まれません。** その場合は
+[`for-cloud-sessions/`](for-cloud-sessions/README.md) の軽い版を、対象プロジェクトの
+`.claude/skills/vsido-design/SKILL.md` としてコミットしてください。動作確認済みです。
+
 ### 入れずに使いたいとき
 
 プラグインを入れなくても、**このリポジトリのURLを伝えるだけ**でも使えます。
@@ -47,6 +53,10 @@ plugins/vsido-design/skills/vsido-design/
 ├── theme/          … 色トークン（既定値＋配色4種）
 ├── logo/           … V-Sidoロゴ 青版・白版
 └── reference/      … 共通CSS/JS の実装一式
+
+for-cloud-sessions/
+├── SKILL.md        … 要点だけを抜いた1ファイル版（クラウドセッション用）
+└── README.md       … その入れ方
 ```
 
 ---
