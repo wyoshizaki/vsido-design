@@ -137,6 +137,39 @@ AtUI.initPanelLayout({ wrapId:"dashWrap", buttonsId:"colCountButtons", resetId:"
 
 ---
 
+## ★互換性の約束（写しを持つプロジェクトのために）
+
+このリポジトリの `theme/` `reference/` `logo/` は、**複数のプロジェクトがそのまま写して使っています**
+（例: VSidoConnectSimple の PC ツールとマイコン内蔵 WebUI）。写した側は「どのコミットを写したか」と
+ファイルごとのハッシュを記録し、ズレたら自動検査で気づくようにしています。
+そのため、ここを変えるときは次を守ってください。
+
+| 変えてはいけないもの | 理由 |
+|---|---|
+| クラス名（上の「使えるクラス名」） | 写した側の HTML がそのまま使っている |
+| `AtUI` の関数名と引数（`initPanelLayout` の `wrapId/buttonsId/resetId/storageKey/defaultColumns`、`initThemePicker` の `selectId/storageKey/defaultTheme`、`log`/`setConn`/`createStore` など） | 写した側の JS が呼んでいる |
+| パネルの形（`.panel[data-panel-id]` > `.panel-head`（`.drag-handle`・`.collapse-toggle`・`.panel-title`）＋ `.panel-body`） | 配置の保存と復元がこの形を前提にしている |
+| 配信パス `/lib/<名前>`・`/lib/themes/<名前>.css`・一覧 `GET /themes` の応答 `{"ok":true,"themes":[...]}` | `initThemePicker` と `--logo-url` が使う。マイコン側もこの道で配っている |
+| 色トークンの名前（`at_theme.css`） | テーマも写した側の独自CSSもトークン名で書いている |
+
+足すのは自由です（クラス・関数・トークン・テーマの追加）。消す・名前を変える・意味を変える必要が出たら、
+`plugin.json` の版を上げて [CHANGELOG.md](../../../../CHANGELOG.md) に**何をどう直せばよいか**を書いてください。
+
+## マイコン（ESP32）の内蔵 WebUI で使うとき
+
+VSidoConnectSimple が実際にやっている形です（`tools/gen_webui_assets.py` / `src/webui/At_WebUI.cpp`）。
+
+- ファイルは**1バイトも変えずに**バイト列としてファームへ埋め込む（PC ツールと同じ部品であることをハッシュで検査できる）。
+- `at_theme.css`・`at_ui.css`・`at_ui.js` は、ページの HTML に `<style>`/`<script>` として**直接入れて1回で送る**。
+  W5500 のような有線 LAN チップは同時に開ける接続が少なく、部品ごとに別の接続で取りに来させると取りこぼすことがある。
+- 配色 `themes/*.css` とロゴ PNG は `/lib/<名前>` で配り、`GET /themes` で一覧を返す（上の約束どおりの道）。
+  ETag を付けて、2回目以降は 304 で本体を送らないようにすると軽い。
+- 埋め込みの合計は約 91KB（ロゴ2枚で約 49KB）。Flash に余裕が無い場合はロゴを1枚にしてもよい。
+- WebUI 固有の部品（設定フォームなど）の CSS も、**色はトークン（`var(--…)`）で書く**。直値を書くと配色を切り替えたときに読めなくなる。
+  キャンバスのグラフは `getComputedStyle(document.documentElement).getPropertyValue("--series-agl")` のように、描くたびにトークンを読む。
+
+---
+
 ## 新しいテーマを足すとき
 
 `theme/themes/` に `.css` を1つ置くだけです。中身は既存をコピーして色を変えるのが早いです。
