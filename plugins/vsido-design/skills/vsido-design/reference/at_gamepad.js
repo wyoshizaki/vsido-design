@@ -224,6 +224,29 @@ const AtGamepad = (() => {
     });
   }
 
-  return { INPUTS, byId, isBinary, kindOf, readRaw, applyDeadzone, pick,
+  /* 一次IIR。時定数[ms]で指定し、描画周期に依存しない係数を使う。
+     二値ボタンは即時通過。再開時は現在入力で初期化して過去の入力を残さない。 */
+  function createIirFilter(){
+    let state=null, previous=null;
+    return {
+      reset(){state=null;previous=null;},
+      step(values,now,tauMs){
+        const tau=Number.isFinite(tauMs)?Math.max(0,Math.min(2000,tauMs)):0;
+        const dt=previous===null?0:Math.max(0,now-previous);
+        const alpha=tau===0?1:1-Math.exp(-dt/tau);
+        const out={...values};
+        for(const i of INPUTS){
+          if(i.kind==='button')continue;
+          const x=Number.isFinite(values[i.id])?Math.max(i.kind==='trigger'?0:-1,Math.min(1,values[i.id])):0;
+          let y=state===null?x:state[i.id]+alpha*(x-state[i.id]);
+          if(Math.abs(y-x)<1e-5)y=x;
+          out[i.id]=y;
+        }
+        state={...out};previous=now;return out;
+      }
+    };
+  }
+
+  return { INPUTS, byId, isBinary, kindOf, readRaw, applyDeadzone, pick, createIirFilter,
            svg, readoutHtml, updateVisual, inputListHtml, updateInputList };
 })();
