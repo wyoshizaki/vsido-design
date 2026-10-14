@@ -88,8 +88,16 @@ const AtUI = (() => {
      ・列数を選べる（2〜4列）
      ・パネルの掴み手(⠿)をドラッグして列内・列間を並び替えできる
      ・パネルごとに開閉でき、列構成・順序・開閉状態を localStorage へ保存する
+     ・（1.2.0〜・任意）hiddenListId を渡すと、パネルの見出しに × が付き、パネルを丸ごと非表示にできる。
+       非表示のパネルは hiddenListId の要素へ「タイトル ↺」のボタンとして並び、押すと元の位置へ戻る。
+       ★見た目を消すだけで、パネルの中身（JS の処理）は動き続ける。非表示の状態も localStorage へ保存する。
+       渡さないツールは従来どおり（× は出ない）。
      使い方: AtUI.initPanelLayout({ wrapId:"dashWrap", buttonsId:"colCountButtons",
-                                    resetId:"layoutReset", storageKey:"...", defaultColumns:2 })
+                                    resetId:"layoutReset", storageKey:"...", defaultColumns:2,
+                                    hiddenListId:"hiddenPanels" })   ← hiddenListId は任意
+     戻り値: { save, setColumnCount, layout(), hiddenIds() }
+       layout()    … 今の { columnCount, columns:[[{id,collapsed,hidden}]] }（保存形式と同じ。書き出し用）
+       hiddenIds() … 非表示のパネルID の配列
      ========================================================================== */
   function initPanelLayout(opt){
     const wrap = $(opt.wrapId);
@@ -97,6 +105,7 @@ const AtUI = (() => {
     const DEFAULT_COLS = opt.defaultColumns || 2;
     let draggingId = null;
     let columnCount = DEFAULT_COLS;
+    const HIDE = !!opt.hiddenListId;
 
     const getColumns = () => Array.from(wrap.querySelectorAll(".dash-col"));
     const allPanels  = () => Array.from(document.querySelectorAll(".panel[data-panel-id]"));
@@ -173,13 +182,42 @@ const AtUI = (() => {
       if(btn) btn.textContent = collapsed ? "▶" : "▼";
     }
 
-    function save(){
+    function applyHidden(panel, hidden){
+      panel.classList.toggle("panel-hidden", hidden);
+    }
+
+    /* 非表示のパネルを「タイトル ↺」のボタンとして並べる（押すと元の位置へ戻る） */
+    function renderHiddenList(){
+      if(!HIDE) return;
+      const box = $(opt.hiddenListId);
+      if(!box) return;
+      const hidden = allPanels().filter(p => p.classList.contains("panel-hidden"));
+      box.innerHTML = "";
+      box.classList.toggle("empty", hidden.length === 0);
+      hidden.forEach(p => {
+        const b = document.createElement("button");
+        const t = p.querySelector(".panel-title");
+        b.type = "button";
+        b.className = "panel-restore";
+        b.textContent = (t ? t.textContent.trim() : p.dataset.panelId) + " ↺";
+        b.title = "クリックで再表示";
+        b.addEventListener("click", () => { applyHidden(p, false); renderHiddenList(); save(); });
+        box.appendChild(b);
+      });
+    }
+
+    function layout(){
       const cols = getColumns().map(col =>
         Array.from(col.querySelectorAll(".panel[data-panel-id]")).map(p => ({
           id: p.dataset.panelId,
           collapsed: p.querySelector(".panel-body").classList.contains("collapsed"),
+          hidden: p.classList.contains("panel-hidden"),
         })));
-      try { localStorage.setItem(KEY, JSON.stringify({ columnCount, columns: cols })); } catch(e){}
+      return { columnCount, columns: cols };
+    }
+
+    function save(){
+      try { localStorage.setItem(KEY, JSON.stringify(layout())); } catch(e){}
     }
 
     function load(){
@@ -201,14 +239,17 @@ const AtUI = (() => {
               const p = byId[entry.id];
               if(!p) return;
               applyCollapsed(p, !!entry.collapsed);
+              applyHidden(p, HIDE && !!entry.hidden);
               cols[i].appendChild(p);
             });
           });
           updateButtons();
+          renderHiddenList();
           return;
         }
       }
       setColumnCount(DEFAULT_COLS, true);
+      renderHiddenList();
     }
 
     function wirePanel(panel){
@@ -218,6 +259,18 @@ const AtUI = (() => {
         applyCollapsed(panel, !panel.querySelector(".panel-body").classList.contains("collapsed"));
         save();
       });
+      if(HIDE){
+        const head = panel.querySelector(".panel-head");
+        if(head && !head.querySelector(".panel-hide")){
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "panel-hide";
+          b.title = "このパネルを非表示（「非表示中」のボタンで戻せます）";
+          b.textContent = "×";
+          b.addEventListener("click", () => { applyHidden(panel, true); renderHiddenList(); save(); });
+          head.appendChild(b);
+        }
+      }
       if(handle){
         handle.addEventListener("dragstart", e => {
           draggingId = panel.dataset.panelId;
@@ -256,7 +309,8 @@ const AtUI = (() => {
       });
     }
     load();
-    return { save, setColumnCount };
+    const hiddenIds = () => allPanels().filter(p => p.classList.contains("panel-hidden")).map(p => p.dataset.panelId);
+    return { save, setColumnCount, layout, hiddenIds };
   }
 
   /* ==========================================================================
