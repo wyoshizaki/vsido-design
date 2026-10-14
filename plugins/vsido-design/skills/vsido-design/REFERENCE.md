@@ -86,6 +86,7 @@ AtUI.initPanelLayout({ wrapId:"dashWrap", buttonsId:"colCountButtons", resetId:"
 | クラス | 何 |
 |---|---|
 | `.panel` / `.panel-head` / `.panel-body` | ドラッグ配置できるパネル |
+| `.hidden-panels` / `.panel-hide` / `.panel-restore` / `.panel.panel-hidden` | パネルの非表示（1.2.0〜。`initPanelLayout` に `hiddenListId` を渡したときだけ。`.hidden-panels` を付けた入れ物を置くと「非表示中: タイトル ↺」が並ぶ） |
 | `.toolbar` / `.toolbar.tight` | 横並びの操作列 |
 | `.field` | ラベル＋入力のひとかたまり |
 | `.switch` | チェックボックス＋ラベル |
@@ -122,6 +123,22 @@ AtUI.initPanelLayout({ wrapId:"dashWrap", buttonsId:"colCountButtons", resetId:"
 `at_theme.css`（既定値）→ `themes/<名前>.css`（上書き）の順です。逆にすると効きません。
 画面から切り替えたい場合は、`at_ui.js` の `AtUI.initThemePicker()` が
 `<link>` を差し替える形で実装してあるので、それをそのまま使えます。
+
+### パネルを非表示にする（1.2.0〜・任意）
+
+`initPanelLayout()` に `hiddenListId` を渡すと、各パネルの見出しに **×** が付き、パネルを丸ごと隠せます。
+隠したパネルは `hiddenListId` の要素（`class="hidden-panels"` を付ける）に「タイトル ↺」のボタンとして並び、押すと元の位置へ戻ります。
+**見た目を消すだけで、パネルの中の処理は動き続けます。** 非表示の状態も配置と一緒に保存されます。
+戻り値の `layout()`（今の配置。保存形式と同じ）と `hiddenIds()` で、配布用の設定を書き出すこともできます。
+
+```html
+<span class="hidden-panels" id="hiddenPanels"></span>
+```
+```js
+const panels = AtUI.initPanelLayout({ wrapId:"dashWrap", buttonsId:"colCountButtons", resetId:"layoutReset",
+                                       storageKey:"わたしのツール_layout_v1", defaultColumns:2, hiddenListId:"hiddenPanels" });
+panels.hiddenIds();   // → ["chart", "log"] など
+```
 
 ### パネル配置の保存キー
 
